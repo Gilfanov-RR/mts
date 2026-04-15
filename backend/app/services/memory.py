@@ -14,7 +14,7 @@ class Memory(Base):
     user_id = Column(String, index=True)
     key = Column(String)
     value = Column(Text)
-    metadata = Column(JSON)
+    meta = Column(JSON)
 
 Base.metadata.create_all(engine)
 

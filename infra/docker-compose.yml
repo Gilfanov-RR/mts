@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
@@ -15,12 +15,17 @@ services:
       - chroma
 
   frontend:
-    build: ../frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     container_name: hack-frontend
     ports:
       - "5173:5173"
+    # Монтируем ТОЛЬКО исходники, а не весь проект
     volumes:
-      - ../frontend:/app
+      - ../frontend/src:/app/src:delegated
+      - ../frontend/public:/app/public:delegated
+      - /app/node_modules
     command: ["npm", "run", "dev", "--", "--host"]
 
   db:
@@ -36,7 +41,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   chroma:
-    image: chromadb/chromadb:latest
+    image: chromadb/chroma:latest
     container_name: hack-chroma
     ports:
       - "8001:8000"
